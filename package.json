@@ -1,7 +1,7 @@
 {
   "name": "with-cache",
   "version": "1.0.0",
-  "description": "",
+  "description": "Function composition wrapperd that will allow you to cache returned values",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "browser": "lib/index.iife.js",
@@ -9,7 +9,7 @@
     "build": "rollup -c"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "rollup": "^2.18.1",
     "rollup-plugin-terser": "^6.1.0",
