@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "author": "",
+  "author": "https://twitter.com/matChojecky",
   "license": "MIT",
   "devDependencies": {
     "rollup": "^2.18.1",
