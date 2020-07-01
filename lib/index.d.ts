@@ -1,8 +1,8 @@
-export declare type WithCacheOptions<T extends (...args: any) => any> = {
+declare type WithCacheOptions<T extends (...args: any) => any> = {
     validFor?: number;
     keyGen?: (...args: Parameters<T>) => string;
 };
-export declare type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-declare const withCache: <F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<F> | undefined) => (...args: Parameters<F>) => Promise<UnwrapPromise<ReturnType<F>>>;
+declare type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+declare function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>): (...args: Parameters<typeof fn>) => Promise<UnwrapPromise<ReturnType<typeof fn>>>;
 export default withCache;
 //# sourceMappingURL=index.d.ts.map

@@ -1,11 +1,11 @@
-export type WithCacheOptions<T extends (...args: any) => any> = {
+type WithCacheOptions<T extends (...args: any) => any> = {
   validFor?: number;
   keyGen?: (...args: Parameters<T>) => string;
 }
 
-export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
-const withCache = <F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>) => {
+function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>) {
   const cache = new Map();
 
   const { validFor = 14400000, keyGen } = opts ?? {};
