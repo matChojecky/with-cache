@@ -1,6 +1,6 @@
 {
   "name": "with-cache",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Function composition wrapperd that will allow you to cache returned values",
   "main": "lib/index.js",
   "browser": "lib/browser.js",
