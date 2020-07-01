@@ -8,12 +8,20 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "author": "https://twitter.com/matChojecky",
+  "author": "Mateusz Chojecki <mchojecky@gmail.com> (https://twitter.com/matChojecky)",
   "license": "MIT",
   "devDependencies": {
     "rollup": "^2.18.1",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "typescript": "^3.9.6"
+  },
+  "homepage": "https://github.com/matChojecky/with-cache",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matChojecky/with-cache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/matChojecky/with-cache/issues"
   }
 }
