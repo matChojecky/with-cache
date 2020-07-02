@@ -1,6 +1,6 @@
 {
   "name": "with-cache",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Function composition wrapperd that will allow you to cache returned values",
   "main": "lib/cjs.js",
   "module": "lib/esm.js",
