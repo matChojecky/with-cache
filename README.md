@@ -1,6 +1,6 @@
 # with-cache
 
-with-cache is a simple library that allows you to compose a function that will cache it's result. You can use  cache for any operation from more common like HTTP requests to less like operations that requires heavy computation.
+with-cache is a simple library that allows you to compose a function that will cache it's result. You can use  cache for any operation from more common like HTTP requests to less like operations that requires heavy computation. with-cache is promise based. Returning Promise from wrapped function.
 
 
 ## Usage
@@ -15,7 +15,7 @@ Simplest case:
 		...do something
 	}
 	
-	const wrappedFecthSomething(fetchSomething);
+	const wrappedFecthSomething = withCache(fetchSomething);
 ```
 
 `withCache` can also accept second argument that are options.
@@ -47,5 +47,5 @@ function getCacheKey(
 	return idToFetch
 }
 	
-const wrappedFecthSomething(fetchSomething, { keyGen: getCacheKey });
+const wrappedFecthSomething = withCache(fetchSomething, { keyGen: getCacheKey });
 ``` 
