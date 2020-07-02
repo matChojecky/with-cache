@@ -29,6 +29,6 @@ export default {
     output: {
       comments: false
     }
-  }) // minifies generated bundles
+  })
  ]
 };
