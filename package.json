@@ -2,15 +2,13 @@
   "name": "with-cache",
   "version": "1.0.7",
   "description": "Function composition wrapperd that will allow you to cache returned values",
-  "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "type": "commonjs",
   "exports": {
-    ".": {
-      "require": "./lib/index.js",
-      "default": "./lib/index.esm.js"
-    }
+    "require": "./lib/index.cjs",
+    "default": "./lib/index.mjs"
   },
   "types": "lib/index.d.ts",
   "scripts": {
