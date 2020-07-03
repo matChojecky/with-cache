@@ -1,6 +1,6 @@
 {
   "name": "with-cache",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Function composition wrapperd that will allow you to cache returned values",
   "type": "module",
   "main": "lib/cjs/index.js",
