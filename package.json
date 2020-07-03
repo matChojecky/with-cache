@@ -2,14 +2,9 @@
   "name": "with-cache",
   "version": "1.0.8",
   "description": "Function composition wrapperd that will allow you to cache returned values",
-  "main": "lib/index.cjs",
-  "module": "lib/index.mjs",
+  "main": "lib/index.js",
   "browser": "lib/index.browser.js",
-  "type": "commonjs",
-  "exports": {
-    "require": "./lib/index.cjs",
-    "default": "./lib/index.mjs"
-  },
+  "type": "module",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "rollup -c"
