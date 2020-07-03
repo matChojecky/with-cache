@@ -3,27 +3,16 @@
   "version": "1.1.0",
   "description": "Function composition wrapperd that will allow you to cache returned values",
   "type": "commonjs",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "browser": "lib/browser/index.js",
+  "main": "lib/index.js",
   "files": [
     "lib/"
   ],
-  "exports": {
-    ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
-    }
-  },
   "scripts": {
-    "build": "rollup -c"
+    "build": "tsc"
   },
   "author": "Mateusz Chojecki <mchojecky@gmail.com> (https://twitter.com/matChojecky)",
   "license": "MIT",
   "devDependencies": {
-    "rollup": "^2.18.1",
-    "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.27.1",
     "typescript": "^3.9.6"
   },
   "homepage": "https://github.com/matChojecky/with-cache",

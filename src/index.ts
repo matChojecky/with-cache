@@ -5,7 +5,7 @@ export interface WithCacheOptions<T extends (...args: any) => any> {
 
 export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
-export function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>) {
+export default function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>) {
   const cache = new Map();
 
   const { validFor = 14400000, keyGen } = opts ?? {};
