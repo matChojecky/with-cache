@@ -1,4 +1,5 @@
 src
+examples
 tsconfig.json
 rollup.config.js
 node_modules

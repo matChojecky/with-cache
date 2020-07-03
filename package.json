@@ -10,8 +10,10 @@
     "lib/"
   ],
   "exports": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
   },
   "scripts": {
     "build": "rollup -c"
