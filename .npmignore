@@ -1,5 +1,7 @@
 src
 examples
 tsconfig.json
-rollup.config.js
+tsconfig-cjs.json
+README.md
 node_modules
+tests
