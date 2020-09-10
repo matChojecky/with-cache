@@ -37,7 +37,7 @@
   },
   "bundlesize": [
     {
-      "path": "./lib/cjs/index_old.js",
+      "path": "./lib/esm/index.js",
       "threshold": "1kB"
     }
   ]
