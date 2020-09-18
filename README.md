@@ -1,12 +1,12 @@
 # with-cache
 
-with-cache is a simple library that allows you to compose a function that will cache it's result. You can use  cache for any operation from more common like HTTP requests to less like operations that requires heavy computation. with-cache is promise based. Returning Promise from wrapped function.
+with-cache is a simple library that allows you to create with basic composition a function which results will be memoized. You can use cache for any operation from more common like HTTP requests to less like operations that requires heavy computation.
 
 
 ## Usage
 Simplest case:
 ```
-	import withCache from 'with-cache';
+	import { withCache } from 'with-cache';
 	function fetchSomething(
 		idToFetch,
 		urlToFetch,

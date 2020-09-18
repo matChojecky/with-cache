@@ -1,17 +1,18 @@
+
 /**
  * @typedef CacheOptions
- * @typeParam Args Arguments array that base function accepts
- * @typeParam CacheItem Type of returned value from base function 
+ * @typeParam Args Arguments array infered from passed function to cache
+ * @typeParam ResultType Value that is returned from operation, infered from  passed function 
  */
-interface CacheOptions<Args extends unknown[], CacheItem extends unknown> {
+interface CacheOptions<Args extends unknown[], ResultType extends unknown> {
   /**
    * Function used to calculate cache key
-   * @default (...args) => JSON.stringify(args)
+   * @default ```(...args) => JSON.stringify(args)```
    * @returns returned value used as a cache key
    */
   keymaker?: (...args: Args) => string | number;
   /**
-   * Time to live of cached value in ms
+   * Time for how long cached value is valid in ms. Defaults to 1h
    * @default 3600000
    */
   ttl?: number;
@@ -19,21 +20,24 @@ interface CacheOptions<Args extends unknown[], CacheItem extends unknown> {
    * Cache instance
    * @default new Map()
    */
-  cache?: Cache<CacheItem>;
+  cache?: Cache<ResultType>;
 }
 
 /**
- * @typeParam Args Arguments array that base function accepts
- * @typeParam ResultType Type of returned value from base function 
+ * @typeParam Args Arguments array infered from passed function to cache
+ * @typeParam ResultType Value that is returned from operation, infered from  passed function 
  */
 interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
+  /**
+   * Calling cache resolver will call lookup in cache to return matching value or call base function that was passed to {@link withCache} factory
+   */
   (...args: Args): ResultType;
   /**
-   * clear cache
+   * Calls clear method on cache instance
    */
   clear(): void;
   /**
-   * Using this method won't check for cached values and will straight call memoized fn and save new result to cache
+   * Using this method won't check for cached values and will call base fn and save result of this operation to cache
    */
   refresh(...args: Args): ResultType;
 }
@@ -41,15 +45,15 @@ interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
 type Cache<T> = Map<string | number, { value: T; validFor: number }>;
 
 /**
- * @ignore
+ * @hidden
  */
 const defaultKeymaker = <Args extends unknown[]>(...args: Args) =>
   JSON.stringify(args);
 
 /**
- * Creates function that caches results returned from base function fn
- * @typeParam Args Arguments array that base function accepts
- * @typeParam ResultType Type of returned value from base function 
+ * Factory function creating cache resolver for memoized operations
+ * @typeParam Args Arguments array infered from passed function to memoize
+ * @typeParam ResultType Value that is returned, infered from passed function 
  */
 export function withCache<Args extends unknown[], ResultType extends unknown>(
   fn: (...args: Args) => ResultType,
