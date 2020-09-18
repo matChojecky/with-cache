@@ -1,51 +1,50 @@
+
 # with-cache
+
+  
 
 with-cache is a simple library that allows you to create with basic composition a function which results will be memoized. You can use cache for any operation from more common like HTTP requests to less like operations that requires heavy computation.
 
+[**Documentation**](https://matchojecky.github.io/with-cache/)
+
+  
 
 ## Usage
+
 Simplest case:
-```
-	import { withCache } from 'with-cache';
-	function fetchSomething(
-		idToFetch,
-		urlToFetch,
-		whatEver
-	) {
-		...do something
-	}
-	
-	const wrappedFecthSomething = withCache(fetchSomething);
+```javascript
+import { withCache } from 'with-cache';
+function heavyOperation(arg1, arg2) {
+	//...do something
+}
+const heavyOperatuionWithCaching = withCache(heavyOperation);
+
+//this call will run heavyOperation function
+const result1 = heavyOperatuionWithCaching("pass", "secret");
+
+//this call return previously cached value 
+const result2 = heavyOperatuionWithCaching("pass", "secret");
+
 ```
 
-`withCache` can also accept second argument that are options.
-```
-{
-	validFor?:  number; // value accepted in MS, defaults to 12 hours
-	keyGen?: (...args) =>  string;
-}
-```
-If you want to cache many results you can pass keyGen function to options, this funtion should accept same arguments as you function you are wrapping as they are passed to it during key evaluation.
+  
 
-### Example:
-```
-import withCache from 'with-cache';
-function fetchSomething(
-	idToFetch,
-	urlToFetch,
-	whatEver
-) {
-	...do something
-}
+`withCache` can also accept options as a second argument. [See docs](https://matchojecky.github.io/with-cache/interfaces/cacheoptions.html)
 
-// This allows for caching multiple responses
-function getCacheKey(
-	idToFetch,
-	urlToFetch,
-	whatEver
-) {
-	return idToFetch
+```javascript
+import { withCache } from 'with-cache';
+
+function heavyOperation(arg1, arg2) {
+	//...do something
 }
-	
-const wrappedFecthSomething = withCache(fetchSomething, { keyGen: getCacheKey });
-``` 
+const customKeymaker = (arg1, arg2) => arg1 + arg2;
+
+class CustomCache extends Map {}
+
+const heavyOperatuionWithCaching = withCache(heavyOperation, {
+	keymaker: customKeymaker,
+	ttl: 420,
+	cache: new CustomCache()
+});
+
+```
