@@ -7,7 +7,12 @@ with-cache is a simple library that allows you to create with basic composition 
 
 [**Documentation**](https://matchojecky.github.io/with-cache/)
 
-  
+
+## Instalation
+```bash
+npm instal --save with-cache
+```
+
 
 ## Usage
 
