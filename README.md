@@ -10,7 +10,7 @@ with-cache is a simple library that allows you to create with basic composition 
 
 ## Instalation
 ```bash
-npm instal --save with-cache
+npm install --save with-cache
 ```
 
 
