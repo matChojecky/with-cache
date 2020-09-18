@@ -64,7 +64,7 @@
   "bundlesize": [
     {
       "path": "./lib/**/*.js",
-      "maxSize": "420"
+      "maxSize": "690"
     }
   ]
 }
