@@ -1,27 +1,98 @@
-export interface WithCacheOptions<T extends (...args: any) => any> {
-  validFor?: number;
-  keyGen?: (...args: Parameters<T>) => string;
+
+/**
+ * @typedef CacheOptions
+ * @typeParam Args Arguments array infered from passed function to cache
+ * @typeParam ResultType Value that is returned from operation, infered from  passed function 
+ */
+interface CacheOptions<Args extends unknown[], ResultType extends unknown> {
+  /**
+   * Function used to calculate cache key
+   * @default ```(...args) => JSON.stringify(args)```
+   * @returns returned value used as a cache key
+   */
+  keymaker?: (...args: Args) => string | number;
+  /**
+   * Time for how long cached value is valid in ms. Defaults to 1h
+   * @default 3600000
+   */
+  ttl?: number;
+  /**
+   * Cache instance
+   * @default new Map()
+   */
+  cache?: Cache<ResultType>;
 }
 
-export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
+/**
+ * @typeParam Args Arguments array infered from passed function to cache
+ * @typeParam ResultType Value that is returned from operation, infered from  passed function 
+ */
+interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
+  /**
+   * Calling cache resolver will call lookup in cache to return matching value or call base function that was passed to {@link withCache} factory
+   */
+  (...args: Args): ResultType;
+  /**
+   * Calls clear method on cache instance
+   */
+  clear(): void;
+  /**
+   * Using this method won't check for cached values and will call base fn and save result of this operation to cache
+   */
+  refresh(...args: Args): ResultType;
+}
 
-export default function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>) {
-  const cache = new Map();
+type Cache<T> = Map<string | number, { value: T; validFor: number }>;
 
-  const { validFor = 14400000, keyGen } = opts ?? {};
-  const getKey = !!keyGen ? keyGen : () => "res";
-  const isValid = (validTo: number): boolean => Date.now() <= validTo;
+/**
+ * @hidden
+ */
+const defaultKeymaker = <Args extends unknown[]>(...args: Args) =>
+  JSON.stringify(args);
 
-  return async (...args: Parameters<typeof fn>): Promise<UnwrapPromise<ReturnType<typeof fn>>> => {
-    const key = getKey(...args)
-    const cached = cache.get(key);
-    if(!!cached && isValid(cached.validTo)) {
-      return cached.value
-    }
-    const value = await fn(...args);
-    const validTo = Date.now() + validFor;
-    cache.set(key, {value, validTo})
+/**
+ * Factory function creating cache resolver for memoized operations
+ * @typeParam Args Arguments array infered from passed function to memoize
+ * @typeParam ResultType Value that is returned, infered from passed function 
+ */
+export function withCache<Args extends unknown[], ResultType extends unknown>(
+  fn: (...args: Args) => ResultType,
+  options: CacheOptions<Args, ResultType> = {}
+): CacheResolver<Args, ResultType> {
+  const {
+    keymaker = defaultKeymaker,
+    ttl = 3600000,
+    cache = new Map(),
+  } = options;
 
-    return value as UnwrapPromise<ReturnType<typeof fn>>; 
+  function runFuncAndSave(
+    key: ReturnType<typeof keymaker>,
+    ...args: Args
+  ): ResultType {
+    const result = fn(...args);
+    cache.set(key, { value: result, validFor: Date.now() + ttl });
+    return result;
   }
+
+  function cacheResolver(...args: Args) {
+    const key = keymaker(...args);
+    const cachedValue = cache.get(key);
+
+    if (!!cachedValue && cachedValue.validFor > Date.now()) {
+      return cachedValue.value;
+    }
+
+    return runFuncAndSave(key, ...args);
+  }
+
+  cacheResolver.clear = function () {
+    cache.clear();
+  };
+
+  cacheResolver.refresh = function (...args: Args): ResultType {
+    const key = keymaker(...args);
+    return runFuncAndSave(key, ...args);
+  };
+
+  return cacheResolver;
 }

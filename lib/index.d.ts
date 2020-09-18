@@ -1,6 +1,17 @@
-export interface WithCacheOptions<T extends (...args: any) => any> {
-    validFor?: number;
-    keyGen?: (...args: Parameters<T>) => string;
+interface CacheOptions<Args extends unknown[], ResultType extends unknown> {
+    keymaker?: (...args: Args) => string | number;
+    ttl?: number;
+    cache?: Cache<ResultType>;
 }
-export declare type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-export default function withCache<F extends (...args: unknown[]) => unknown>(fn: F, opts?: WithCacheOptions<typeof fn>): (...args: Parameters<typeof fn>) => Promise<UnwrapPromise<ReturnType<typeof fn>>>;
+interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
+    (...args: Args): ResultType;
+    clear(): void;
+    refresh(...args: Args): ResultType;
+}
+declare type Cache<T> = Map<string | number, {
+    value: T;
+    validFor: number;
+}>;
+export declare function withCache<Args extends unknown[], ResultType extends unknown>(fn: (...args: Args) => ResultType, options?: CacheOptions<Args, ResultType>): CacheResolver<Args, ResultType>;
+export {};
+//# sourceMappingURL=index.d.ts.map
