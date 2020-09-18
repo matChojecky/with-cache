@@ -1,0 +1,11 @@
+{
+    "mode": "file",
+    "inputFiles": ["./src"],
+    "excludeNotExported": true,
+    "out": "docs",
+    "theme": "minimal",
+    "name": "withCache docs",
+    "readme": "./README.md",
+    "disableSources": true,
+    "hideGenerator": true
+}

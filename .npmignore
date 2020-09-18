@@ -5,3 +5,6 @@ tsconfig-cjs.json
 README.md
 node_modules
 tests
+coverage
+.nyc_output
+.vscode
