@@ -42,7 +42,20 @@ interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
   refresh(...args: Args): ResultType;
 }
 
-type Cache<T> = Map<string | number, { value: T; validFor: number }>;
+/**
+ * @internal
+ * @hidden
+*/
+interface CacheItem<T> {
+  value: T;
+  validTo: number;
+}
+
+/**
+ * 
+ * @typeParam T Cached value type
+*/
+type Cache<T> = Map<string | number, CacheItem<T>>;
 
 /**
  * @hidden
@@ -70,7 +83,7 @@ export function withCache<Args extends unknown[], ResultType extends unknown>(
     ...args: Args
   ): ResultType {
     const result = fn(...args);
-    cache.set(key, { value: result, validFor: Date.now() + ttl });
+    cache.set(key, { value: result, validTo: Date.now() + ttl });
     return result;
   }
 
@@ -78,7 +91,7 @@ export function withCache<Args extends unknown[], ResultType extends unknown>(
     const key = keymaker(...args);
     const cachedValue = cache.get(key);
 
-    if (!!cachedValue && cachedValue.validFor > Date.now()) {
+    if (!!cachedValue && cachedValue.validTo > Date.now()) {
       return cachedValue.value;
     }
 

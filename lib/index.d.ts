@@ -8,10 +8,11 @@ interface CacheResolver<Args extends unknown[], ResultType extends unknown> {
     clear(): void;
     refresh(...args: Args): ResultType;
 }
-declare type Cache<T> = Map<string | number, {
+interface CacheItem<T> {
     value: T;
-    validFor: number;
-}>;
+    validTo: number;
+}
+declare type Cache<T> = Map<string | number, CacheItem<T>>;
 export declare function withCache<Args extends unknown[], ResultType extends unknown>(fn: (...args: Args) => ResultType, options?: CacheOptions<Args, ResultType>): CacheResolver<Args, ResultType>;
 export {};
 //# sourceMappingURL=index.d.ts.map
