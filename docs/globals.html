@@ -66,48 +66,39 @@
 				<h1>with-cache</h1>
 			</a>
 			<p>with-cache is a simple library that allows you to create with basic composition a function which results will be memoized. You can use cache for any operation from more common like HTTP requests to less like operations that requires heavy computation.</p>
+			<p><a href="https://matchojecky.github.io/with-cache/"><strong>Documentation</strong></a></p>
 			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 				<h2>Usage</h2>
 			</a>
 			<p>Simplest case:</p>
-			<pre><code>    <span class="hljs-keyword">import</span> { withCache } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;with-cache&#x27;</span>;
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fetchSomething</span>(<span class="hljs-params">
-        idToFetch,
-        urlToFetch,
-        whatEver
-    </span>) </span>{
-        ...do something
-    }
-
-    <span class="hljs-keyword">const</span> wrappedFecthSomething = withCache(fetchSomething);</code></pre>
-			<p><code>withCache</code> can also accept second argument that are options.</p>
-			<pre><code>{
-    validFor?:  <span class="hljs-built_in">number</span>; <span class="hljs-comment">// value accepted in MS, defaults to 12 hours</span>
-    keyGen?: <span class="hljs-function">(<span class="hljs-params">...args</span>) =&gt;</span>  <span class="hljs-built_in">string</span>;
-}</code></pre>
-			<p>If you want to cache many results you can pass keyGen function to options, this funtion should accept same arguments as you function you are wrapping as they are passed to it during key evaluation.</p>
-			<a href="#example" id="example" style="color: inherit; text-decoration: none;">
-				<h3>Example:</h3>
-			</a>
-			<pre><code><span class="hljs-keyword">import</span> withCache <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;with-cache&#x27;</span>;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fetchSomething</span>(<span class="hljs-params">
-    idToFetch,
-    urlToFetch,
-    whatEver
-</span>) </span>{
-    ...do something
+			<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { withCache } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;with-cache&#x27;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">heavyOperation</span>(<span class="hljs-params">arg1, arg2</span>) </span>{
+    <span class="hljs-comment">//...do something</span>
 }
+<span class="hljs-keyword">const</span> heavyOperatuionWithCaching = withCache(heavyOperation);
 
-<span class="hljs-comment">// This allows for caching multiple responses</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCacheKey</span>(<span class="hljs-params">
-    idToFetch,
-    urlToFetch,
-    whatEver
-</span>) </span>{
-    <span class="hljs-keyword">return</span> idToFetch
+<span class="hljs-comment">//this call will run heavyOperation function</span>
+<span class="hljs-keyword">const</span> result1 = heavyOperatuionWithCaching(<span class="hljs-string">&quot;pass&quot;</span>, <span class="hljs-string">&quot;secret&quot;</span>);
+
+<span class="hljs-comment">//this call return previously cached value </span>
+<span class="hljs-keyword">const</span> result2 = heavyOperatuionWithCaching(<span class="hljs-string">&quot;pass&quot;</span>, <span class="hljs-string">&quot;secret&quot;</span>);
+</code></pre>
+			<p><code>withCache</code> can also accept options as a second argument. <a href="https://matchojecky.github.io/with-cache/interfaces/cacheoptions.html">See docs</a></p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { withCache } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;with-cache&#x27;</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">heavyOperation</span>(<span class="hljs-params">arg1, arg2</span>) </span>{
+    <span class="hljs-comment">//...do something</span>
 }
+<span class="hljs-keyword">const</span> customKeymaker = <span class="hljs-function">(<span class="hljs-params">arg1, arg2</span>) =&gt;</span> arg1 + arg2;
 
-<span class="hljs-keyword">const</span> wrappedFecthSomething = withCache(fetchSomething, { <span class="hljs-attr">keyGen</span>: getCacheKey });</code></pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomCache</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Map</span> </span>{}
+
+<span class="hljs-keyword">const</span> heavyOperatuionWithCaching = withCache(heavyOperation, {
+    <span class="hljs-attr">keymaker</span>: customKeymaker,
+    <span class="hljs-attr">ttl</span>: <span class="hljs-number">420</span>,
+    <span class="hljs-attr">cache</span>: <span class="hljs-keyword">new</span> CustomCache()
+});
+</code></pre>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
